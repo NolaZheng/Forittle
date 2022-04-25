@@ -1,23 +1,20 @@
 <template>
   <div class="btn-container" :style="containerStyle" @click="onClick">
-    <span class="label">開始</span>
+    <span class="label" :style="labelStyle">{{ label }}</span>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import type { CSSProperties } from 'vue'
+import type { StyleValue } from 'vue'
 
 export default defineComponent({
   name: 'ButtonPrimary',
   props: {
     label: String,
-    containerStyle: Object as PropType<CSSProperties>,
-  },
-  methods: {
-    onClick() {
-      console.log(this.containerStyle)
-    },
+    containerStyle: Object as PropType<StyleValue>,
+    labelStyle: Object as PropType<StyleValue>,
+    onClick: Function,
   },
 })
 </script>
@@ -29,6 +26,7 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   width: 366px;
+  /* min-width: 152px; */
   height: 54px;
   background-color: #272f3f;
 }
