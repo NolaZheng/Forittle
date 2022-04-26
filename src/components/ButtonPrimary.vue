@@ -1,6 +1,13 @@
 <template>
-  <div class="btn-container" :style="containerStyle" @click="onClick">
-    <span class="label" :style="labelStyle">{{ label }}</span>
+  <div
+    :value="label"
+    class="btn-container"
+    :style="[containerStyle, selected && { backgroundColor: '#272f3f' }]"
+    @click="onClick"
+  >
+    <span class="label" :style="[labelStyle, selected && { color: 'white' }]">{{
+      label
+    }}</span>
   </div>
 </template>
 
@@ -15,6 +22,7 @@ export default defineComponent({
     containerStyle: Object as PropType<StyleValue>,
     labelStyle: Object as PropType<StyleValue>,
     onClick: Function,
+    selected: Boolean,
   },
 })
 </script>
@@ -26,7 +34,6 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   width: 366px;
-  /* min-width: 152px; */
   height: 54px;
   background-color: #272f3f;
 }

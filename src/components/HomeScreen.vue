@@ -9,10 +9,11 @@
           :key="item.description"
         >
           <ButtonPrimary
+            :selected="selectedLabel === item.content"
             :containerStyle="item.containerStyle"
             :labelStyle="item.labelStyle"
             :label="item.content"
-            :onClick="start"
+            :onClick="() => start(item)"
           />
         </div>
       </div>
@@ -27,7 +28,19 @@
           width="112"
         />
         <div class="chat-box__description">
-          <span>{{ description }}</span>
+          <TypedString :str="description" @onChatEnd="onChatEnd" />
+        </div>
+        <div
+          class="chat-box__continue"
+          @click="start({ content: '', clickAction: 'quizContinue' })"
+        >
+          <span :style="!isAbleToContinue && { color: '#919EBA' }">下一題</span>
+          <div class="chat-box__triangle">
+            <div
+              class="triangle"
+              :style="!isAbleToContinue && { backgroundColor: '#919EBA' }"
+            />
+          </div>
         </div>
       </div>
       <img class="web-name" src="../assets/web-name.png" />
@@ -37,22 +50,25 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import TypedString from './TypedString.vue'
+
 import { Questions } from '@/data/questions'
 
 import ButtonPrimary from '@/components/ButtonPrimary.vue'
+import { Option } from '@/types'
 
 export default defineComponent({
   name: 'HomeScreen',
   components: {
     ButtonPrimary,
-  },
-  props: {
-    //
+    TypedString,
   },
   data() {
     return {
       pageIndex: 0,
       showOverlay: false,
+      isEnabled: true,
+      selectedLabel: '開始',
     }
   },
   computed: {
@@ -65,16 +81,43 @@ export default defineComponent({
     description() {
       return Questions[this.pageIndex].description
     },
+    isAbleToContinue() {
+      return this.isEnabled && this.selectedLabel
+    },
   },
   methods: {
-    start() {
-      if (this.pageIndex + 1 > Questions.length - 1) {
-        if (!this.showOverlay) {
-          this.showOverlay = true
-        }
-        return
+    start(item: Option) {
+      switch (item.clickAction) {
+        case 'optionSelect':
+          this.selectedLabel = item.content
+          break
+        case 'quizContinue':
+          if (!this.isAbleToContinue) return
+          if (this.pageIndex + 1 > Questions.length - 1) {
+            if (!this.showOverlay) {
+              this.showOverlay = true
+            }
+            return
+          }
+          this.pageIndex += 1
+          this.isEnabled = false
+          this.selectedLabel = undefined
+          break
+        case 'numberPicker':
+          if (!this.isEnabled) return
+          if (this.pageIndex + 1 > Questions.length - 1) {
+            if (!this.showOverlay) {
+              this.showOverlay = true
+            }
+            return
+          }
+          this.pageIndex += 1
+          this.isEnabled = false
+          break
       }
-      this.pageIndex += 1
+    },
+    onChatEnd() {
+      this.isEnabled = true
     },
   },
 })
@@ -120,6 +163,7 @@ export default defineComponent({
   border-top: 2px solid #272f3f;
   border-bottom: 2px solid #272f3f;
   align-items: center;
+  font-size: 17px;
 
   &__name {
     position: absolute;
@@ -145,6 +189,48 @@ export default defineComponent({
     text-align: left;
     margin-right: 50px;
     height: 81px;
+  }
+
+  &__continue {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__triangle {
+    transform: rotate(180deg) scaleX(0.7) scaleY(0.6);
+    margin: 5px 5px 0px 8px;
+  }
+  .triangle {
+    position: relative;
+    background-color: #272f3f;
+    text-align: left;
+  }
+  .triangle:before,
+  .triangle:after {
+    content: '';
+    position: absolute;
+    background-color: inherit;
+  }
+  .triangle,
+  .triangle:before,
+  .triangle:after {
+    width: 8px;
+    height: 8px;
+    border-top-right-radius: 40%;
+  }
+
+  .triangle {
+    transform: rotate(-60deg) skewX(-30deg) scale(1, 0.866);
+  }
+  .triangle:before {
+    transform: rotate(-135deg) skewX(-45deg) scale(1.414, 0.707)
+      translate(0, -50%);
+  }
+  .triangle:after {
+    transform: rotate(135deg) skewY(-45deg) scale(0.707, 1.414) translate(50%);
   }
 }
 </style>
