@@ -12,7 +12,7 @@
             :selected="selectedLabel === item.content"
             :containerStyle="item.containerStyle"
             :labelStyle="item.labelStyle"
-            :label="item.content"
+            :label="height ? item.content.replace('???', height) : item.content"
             :onClick="() => start(item)"
           />
         </div>
@@ -44,17 +44,22 @@
         </div>
       </div>
       <img class="web-name" src="../assets/web-name.png" />
+      <ScrollPicker
+        :isVisible="isPickerVisible"
+        @onHeightSelect="onHeightSelect"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import TypedString from './TypedString.vue'
 
+import TypedString from './TypedString.vue'
+import ButtonPrimary from './ButtonPrimary.vue'
+import ScrollPicker from './ScrollPicker.vue'
 import { Questions } from '@/data/questions'
 
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
 import { Option } from '@/types'
 
 export default defineComponent({
@@ -62,6 +67,7 @@ export default defineComponent({
   components: {
     ButtonPrimary,
     TypedString,
+    ScrollPicker,
   },
   data() {
     return {
@@ -69,6 +75,8 @@ export default defineComponent({
       showOverlay: false,
       isEnabled: true,
       selectedLabel: '開始',
+      isPickerVisible: false,
+      height: undefined,
     }
   },
   computed: {
@@ -104,20 +112,18 @@ export default defineComponent({
           this.selectedLabel = undefined
           break
         case 'numberPicker':
-          if (!this.isEnabled) return
-          if (this.pageIndex + 1 > Questions.length - 1) {
-            if (!this.showOverlay) {
-              this.showOverlay = true
-            }
-            return
-          }
-          this.pageIndex += 1
-          this.isEnabled = false
+          if (!this.isEnabled || this.isPickerVisible) return
+          this.isPickerVisible = true
           break
       }
     },
     onChatEnd() {
       this.isEnabled = true
+    },
+    onHeightSelect(h: number) {
+      this.height = h
+      this.selectedLabel = h
+      this.isPickerVisible = false
     },
   },
 })
