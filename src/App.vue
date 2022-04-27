@@ -15,6 +15,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600&display=swap');
 #app {
   font-family: 'Noto Serif TC', serif;
   -webkit-font-smoothing: antialiased;
