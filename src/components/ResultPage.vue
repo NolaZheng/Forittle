@@ -32,37 +32,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+
+type Result = {
+  height: number
+  descriptions: string[]
+}
 
 export default defineComponent({
   name: 'ResultPage',
   components: {},
   props: {
     visible: Boolean,
-    height: Number,
-    type: String,
-  },
-  computed: {
-    result() {
-      const descriptions = []
-      const height =
-        this.height >= 140 && this.height <= 145
-          ? 83
-          : this.height >= 146 && this.height <= 150
-          ? 86
-          : 89
-      if (this.type === 'C') {
-        descriptions.push('若食膳衡方無虞', '宜層次添曲線突')
-      } else if (this.type === 'B') {
-        descriptions.push('忌口無攔多紓壓', '宜四肢展修腰際')
-      } else {
-        descriptions.push('忌久坐姿勤練胯', '宜著高腰擴肩寬')
-      }
-      return {
-        height,
-        descriptions,
-      }
-    },
+    result: Object as PropType<Result>,
   },
 })
 </script>

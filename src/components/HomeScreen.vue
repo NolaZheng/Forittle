@@ -52,7 +52,7 @@
         :isVisible="isPickerVisible"
         @onHeightSelect="onHeightSelect"
       />
-      <ResultPage :visible="isFinished" :height="height" :type="type" />
+      <ResultPage :visible="isFinished" :result="generateResult()" />
       <transition name="fade" appear>
         <div v-if="showOverlay" class="container__overlay">
           <div class="container__overlay__banner">
@@ -114,6 +114,7 @@ export default defineComponent({
       switch (item.clickAction) {
         case 'optionSelect':
           this.selectedLabel = item.content
+          if (item.value) this.type = item.value
           break
         case 'quizContinue':
           if (!this.isAbleToContinue) return
@@ -123,11 +124,8 @@ export default defineComponent({
             }
             return
           }
-          this.animationOn = true
-
-          if (item.value) this.type = item.value
-          this.pageIndex += 1
           this.isEnabled = false
+          this.pageIndex += 1
           this.selectedLabel = undefined
           break
         case 'numberPicker':
@@ -144,12 +142,32 @@ export default defineComponent({
       this.selectedLabel = h
       this.isPickerVisible = false
     },
+    generateResult() {
+      const descriptions = []
+      const height =
+        this.height >= 140 && this.height <= 145
+          ? 83
+          : this.height >= 146 && this.height <= 150
+          ? 86
+          : 89
+      if (this.type === 'C') {
+        descriptions.push('若食膳衡方無虞', '宜層次添曲線突')
+      } else if (this.type === 'B') {
+        descriptions.push('忌口無攔多紓壓', '宜四肢展修腰際')
+      } else {
+        descriptions.push('忌久坐姿勤練胯', '宜著高腰擴肩寬')
+      }
+      return {
+        height,
+        descriptions,
+      }
+    },
   },
   watch: {
     showOverlay(v) {
       if (v) {
         setTimeout(() => {
-          this.showOverlay = !v
+          this.showOverlay = false
           this.isFinished = true
         }, 1000)
       }
@@ -173,7 +191,6 @@ export default defineComponent({
   }
 }
 .container {
-  height: 700px;
   position: relative;
   display: flex;
   align-items: center;
