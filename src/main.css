@@ -5,3 +5,7 @@ body {
   height: 100vh;
   overscroll-behavior: none;
 }
+
+a {
+  all: unset;
+}

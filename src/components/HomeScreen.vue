@@ -2,7 +2,11 @@
   <div>
     <div class="container">
       <img class="image" :src="backgroundImage" />
-      <div class="btn" :style="pageIndex === 0 && { bottom: '80px' }">
+      <div
+        v-show="!isFinished"
+        class="btn"
+        :style="pageIndex === 0 && { bottom: '80px' }"
+      >
         <div
           class="btn__relative"
           v-for="item in buttons"
@@ -17,7 +21,7 @@
           />
         </div>
       </div>
-      <div class="chat-box" v-if="pageIndex !== 0">
+      <div v-show="!isFinished" class="chat-box" v-if="pageIndex !== 0">
         <div class="chat-box__name">
           <span>神秘狐狸</span>
         </div>
@@ -30,7 +34,7 @@
         <div class="chat-box__description">
           <TypedString :str="description" @onChatEnd="onChatEnd" />
         </div>
-        <div
+        <a
           class="chat-box__continue"
           @click="start({ content: '', clickAction: 'quizContinue' })"
         >
@@ -41,13 +45,21 @@
               :style="!isAbleToContinue && { backgroundColor: '#919EBA' }"
             />
           </div>
-        </div>
+        </a>
       </div>
-      <img class="web-name" src="../assets/web-name.png" />
+      <img v-show="!isFinished" class="web-name" src="../assets/web-name.png" />
       <ScrollPicker
         :isVisible="isPickerVisible"
         @onHeightSelect="onHeightSelect"
       />
+      <ResultPage :visible="isFinished" :height="height" :type="type" />
+      <transition name="fade" appear>
+        <div v-if="showOverlay" class="container__overlay">
+          <div class="container__overlay__banner">
+            <p>我算出來了!</p>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -58,8 +70,9 @@ import { defineComponent } from 'vue'
 import TypedString from './TypedString.vue'
 import ButtonPrimary from './ButtonPrimary.vue'
 import ScrollPicker from './ScrollPicker.vue'
-import { Questions } from '@/data/questions'
+import ResultPage from './ResultPage.vue'
 
+import { Questions } from '@/data/questions'
 import { Option } from '@/types'
 
 export default defineComponent({
@@ -68,6 +81,7 @@ export default defineComponent({
     ButtonPrimary,
     TypedString,
     ScrollPicker,
+    ResultPage,
   },
   data() {
     return {
@@ -76,7 +90,9 @@ export default defineComponent({
       isEnabled: true,
       selectedLabel: '開始',
       isPickerVisible: false,
+      isFinished: false,
       height: undefined,
+      type: undefined,
     }
   },
   computed: {
@@ -107,6 +123,9 @@ export default defineComponent({
             }
             return
           }
+          this.animationOn = true
+
+          if (item.value) this.type = item.value
           this.pageIndex += 1
           this.isEnabled = false
           this.selectedLabel = undefined
@@ -124,6 +143,16 @@ export default defineComponent({
       this.height = h
       this.selectedLabel = h
       this.isPickerVisible = false
+    },
+  },
+  watch: {
+    showOverlay(v) {
+      if (v) {
+        setTimeout(() => {
+          this.showOverlay = !v
+          this.isFinished = true
+        }, 1000)
+      }
     },
   },
 })
@@ -144,12 +173,48 @@ export default defineComponent({
   }
 }
 .container {
-  height: auto;
+  height: 700px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__banner {
+      width: 100%;
+      background-color: white;
+      height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 2px solid #000000;
+      border-bottom: 2px solid #000000;
+
+      > p {
+        font-size: 27px;
+      }
+    }
+  }
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .image {
   width: 100%;
 }

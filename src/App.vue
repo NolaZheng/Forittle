@@ -22,6 +22,7 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   max-width: 420px;
+  max-height: 700px;
   margin: 0 auto;
 }
 </style>
