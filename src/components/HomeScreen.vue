@@ -150,16 +150,22 @@ export default defineComponent({
           : this.height >= 146 && this.height <= 150
           ? 86
           : 89
+      let image = undefined
+
       if (this.type === 'C') {
         descriptions.push('若食膳衡方無虞', '宜層次添曲線突')
+        image = require('../assets/result-c.png')
       } else if (this.type === 'B') {
         descriptions.push('忌口無攔多紓壓', '宜四肢展修腰際')
+        image = require('../assets/result-b.png')
       } else {
         descriptions.push('忌久坐姿勤練胯', '宜著高腰擴肩寬')
+        image = require('../assets/result-a.png')
       }
       return {
         height,
         descriptions,
+        image,
       }
     },
   },

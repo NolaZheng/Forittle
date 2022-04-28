@@ -159,7 +159,7 @@ export const Questions: Question[] = [
         labelStyle,
       },
       {
-        content: '寬腿款',
+        content: '寬鬆款',
         clickAction: 'optionSelect',
         containerStyle,
         labelStyle,

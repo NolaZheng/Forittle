@@ -5,9 +5,22 @@
     :style="[containerStyle, selected && { backgroundColor: '#272f3f' }]"
     @click="onClick"
   >
-    <span class="label" :style="[labelStyle, selected && { color: 'white' }]">{{
-      label
-    }}</span>
+    <span
+      v-if="!show"
+      class="label"
+      :style="[labelStyle, selected && { color: 'white' }]"
+    >
+      {{ label }}
+    </span>
+    <span
+      v-else
+      class="label"
+      :style="[labelStyle, selected && { color: 'white' }]"
+    >
+      我是
+      <span :style="{ color: 'rgb(205,205,205)' }">???</span>
+      cm
+    </span>
   </div>
 </template>
 
@@ -23,6 +36,11 @@ export default defineComponent({
     labelStyle: Object as PropType<StyleValue>,
     onClick: Function,
     selected: Boolean,
+  },
+  computed: {
+    show() {
+      return this.label.split('').includes('?')
+    },
   },
 })
 </script>

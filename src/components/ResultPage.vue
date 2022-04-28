@@ -1,23 +1,33 @@
 <template>
   <div v-show="visible" class="result">
-    <div class="box__1">
-      <span class="box__text__small">FoRittle 神秘籤</span>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+      integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
+      crossorigin="anonymous"
+    />
+    <div class="box box__1">
+      <img src="../assets/icon-star.png" width="10" />
+      <span class="box__text__title">FoRittle 神秘籤</span>
+      <img src="../assets/icon-star.png" width="10" />
     </div>
-    <div class="box__2">
+    <div class="box box__2">
       <span class="box__text__large">最佳褲長</span>
     </div>
-    <div class="box__3">
+    <div class="box box__3">
       <span class="box__text__large">{{ result.height }} 公分</span>
     </div>
-    <div class="box__4">4</div>
-    <div class="box__5">
+    <div class="box box__4">
+      <img :src="result.image" width="160" />
+    </div>
+    <div class="box box__5">
       <p class="box__text__vertical">{{ result.descriptions[0] }}</p>
     </div>
-    <div class="box__6">
+    <div class="box box__6">
       <p class="box__text__vertical">{{ result.descriptions[1] }}</p>
     </div>
     <a
-      class="box__7"
+      class="box box__7"
       href="https://www.instagram.com/forlittle_2022"
       target="_blank"
     >
@@ -27,7 +37,42 @@
         <div class="triangle" />
       </div>
     </a>
-    <div class="box__8">分享</div>
+    <div
+      class="box box__8"
+      @click="
+        () => {
+          isSharing = true
+        }
+      "
+    >
+      分享
+      <div v-show="isSharing" class="share">
+        <div class="triangle share__arrow" />
+        <ShareNetwork
+          v-for="network in networks"
+          :network="network.network"
+          :key="network.network"
+          :style="{
+            backgroundColor: network.color,
+            display: 'flex',
+            borderRadius: '20px',
+            height: '26px',
+            width: '26px',
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf: 'center',
+          }"
+          :url="sharing.url"
+          :title="sharing.title"
+          :description="sharing.description"
+          :quote="sharing.quote"
+          :hashtags="sharing.hashtags"
+          :twitterUser="sharing.twitterUser"
+        >
+          <i :class="network.icon"></i>
+        </ShareNetwork>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -37,14 +82,40 @@ import { defineComponent, PropType } from 'vue'
 type Result = {
   height: number
   descriptions: string[]
+  image: any
 }
 
 export default defineComponent({
   name: 'ResultPage',
-  components: {},
   props: {
     visible: Boolean,
     result: Object as PropType<Result>,
+  },
+  data() {
+    return {
+      isSharing: false,
+      sharing: {
+        url: 'https://nolazheng.github.io/Forittle/',
+        title: 'Forittle Title',
+        description: 'this is some description',
+        quote: 'this is quote',
+        hashtags: 'Forittle',
+      },
+      networks: [
+        {
+          network: 'facebook',
+          name: 'Facebook',
+          icon: 'fab fah fa-md fa-facebook-f',
+          color: '#272F3F',
+        },
+        {
+          network: 'line',
+          name: 'Line',
+          icon: 'fab fah fa-md fa-line',
+          color: '#272F3F',
+        },
+      ],
+    }
   },
 })
 </script>
@@ -58,14 +129,32 @@ export default defineComponent({
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 40px 70px 96px 96px 96px 96px 60px 46px;
-  > div,
-  a {
+
+  > .box {
     background-color: #fcfcfb;
     border: 0.5px solid black;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
+  }
+}
+
+.share {
+  display: flex;
+  height: 40px;
+  width: 92px;
+  position: absolute;
+  border: 1px solid #272f3f;
+  bottom: -40px;
+  justify-content: space-evenly;
+  background-color: white;
+
+  &__arrow {
+    background-color: white !important;
+    position: absolute !important;
+    top: -6px !important;
+    left: 48%;
   }
 }
 
@@ -131,6 +220,10 @@ export default defineComponent({
   }
 
   &__text {
+    &__title {
+      font-size: 17px;
+      margin: 0 5px;
+    }
     &__small {
       font-size: 17px;
     }
