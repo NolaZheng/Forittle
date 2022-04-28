@@ -1,5 +1,5 @@
 diff --git a/node_modules/vue-scroll-picker/lib/style.css b/node_modules/vue-scroll-picker/lib/style.css
-index 1b22f51..f240e96 100644
+index 1b22f51..b015713 100644
 --- a/node_modules/vue-scroll-picker/lib/style.css
 +++ b/node_modules/vue-scroll-picker/lib/style.css
 @@ -1 +1,64 @@
@@ -25,7 +25,7 @@ index 1b22f51..f240e96 100644
 +  color: #333;
 +}
 +.vue-scroll-picker-item-selected {
-+  color: #007bff;
++  color: rgb(39, 47, 63);
 +}
 +.vue-scroll-picker-item-empty,
 +.vue-scroll-picker-item-placeholder {
