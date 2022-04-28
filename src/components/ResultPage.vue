@@ -46,32 +46,34 @@
       "
     >
       分享
-      <div v-show="isSharing" class="share">
-        <div class="triangle share__arrow" />
-        <ShareNetwork
-          v-for="network in networks"
-          :network="network.network"
-          :key="network.network"
-          :style="{
-            backgroundColor: network.color,
-            display: 'flex',
-            borderRadius: '20px',
-            height: '26px',
-            width: '26px',
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignSelf: 'center',
-          }"
-          :url="sharing.url"
-          :title="sharing.title"
-          :description="sharing.description"
-          :quote="sharing.quote"
-          :hashtags="sharing.hashtags"
-          :twitterUser="sharing.twitterUser"
-        >
-          <i :class="network.icon"></i>
-        </ShareNetwork>
-      </div>
+      <transition name="fade">
+        <div v-show="isSharing" class="share">
+          <div class="triangle share__arrow" />
+          <ShareNetwork
+            v-for="network in networks"
+            :network="network.network"
+            :key="network.network"
+            :style="{
+              backgroundColor: network.color,
+              display: 'flex',
+              borderRadius: '20px',
+              height: '26px',
+              width: '26px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              alignSelf: 'center',
+            }"
+            :url="sharing.url"
+            :title="sharing.title"
+            :description="sharing.description"
+            :quote="sharing.quote"
+            :hashtags="sharing.hashtags"
+            :twitterUser="sharing.twitterUser"
+          >
+            <i :class="network.icon"></i>
+          </ShareNetwork>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -122,6 +124,15 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 .result {
   position: absolute;
   width: 85%;

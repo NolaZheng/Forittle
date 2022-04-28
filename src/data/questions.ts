@@ -4,6 +4,7 @@ const containerStyle = {
   width: '152px',
   backgroundColor: 'white',
   border: '2px solid #272F3F',
+  margin: '10px',
 }
 
 const labelStyle = {

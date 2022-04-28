@@ -5,7 +5,7 @@
       <div
         v-show="!isFinished"
         class="btn"
-        :style="pageIndex === 0 && { bottom: '80px' }"
+        :style="pageIndex === 0 && { bottom: '85px' }"
       >
         <div
           class="btn__relative"
@@ -190,7 +190,6 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 24px;
 
   &__relative {
     position: relative;

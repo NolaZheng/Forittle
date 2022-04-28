@@ -52,7 +52,7 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   width: 366px;
-  height: 54px;
+  height: 48px;
   background-color: #272f3f;
 }
 .label {
