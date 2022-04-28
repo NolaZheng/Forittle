@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
-import store from './store'
 import './main.css'
+import VueSocialSharing from 'vue-social-sharing'
 
-createApp(App).use(store).mount('#app')
+createApp(App).use(VueSocialSharing).mount('#app')
