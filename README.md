@@ -24,6 +24,26 @@ npm run build
 npm run lint
 ```
 
+### Hosting on Firebase
+
+login
+
+```
+firebase login
+```
+
+setup
+
+```
+firebase init
+```
+
+deploy
+
+```
+firebase deploy
+```
+
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
