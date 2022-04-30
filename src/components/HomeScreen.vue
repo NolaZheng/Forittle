@@ -1,5 +1,15 @@
 <template>
-  <div>
+  <div
+    :style="{
+      height: '100%',
+      backgroundColor: 'rgb(50,50,50)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: color[pageIndex],
+      width: '100%',
+    }"
+  >
     <div class="container">
       <img class="image" :src="backgroundImage" />
       <div
@@ -38,11 +48,15 @@
           class="chat-box__continue"
           @click="start({ content: '', clickAction: 'quizContinue' })"
         >
-          <span :style="!isAbleToContinue && { color: '#919EBA' }">下一題</span>
+          <span :style="!isAbleToContinue && { color: 'rgb(205,205,205)' }"
+            >下一題</span
+          >
           <div class="chat-box__triangle">
             <div
               class="triangle"
-              :style="!isAbleToContinue && { backgroundColor: '#919EBA' }"
+              :style="
+                !isAbleToContinue && { backgroundColor: 'rgb(205,205,205)' }
+              "
             />
           </div>
         </a>
@@ -93,6 +107,15 @@ export default defineComponent({
       isFinished: false,
       height: undefined,
       type: undefined,
+      color: [
+        'rgb(252 251 247)',
+        'rgb(243 226 196)',
+        'rgb(243 226 196)',
+        'rgb(243 226 196)',
+        'rgb(246 229 203)',
+        'rgb(247 249 246)',
+        'rgb(243 245 242)',
+      ],
     }
   },
   computed: {
@@ -200,6 +223,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 414px;
 
   &__overlay {
     position: absolute;

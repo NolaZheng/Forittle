@@ -97,10 +97,10 @@ export default defineComponent({
     return {
       isSharing: false,
       sharing: {
-        url: 'https://nolazheng.github.io/Forittle/',
-        title: 'Forittle Title',
-        description: 'this is some description',
-        quote: 'this is quote',
+        url: 'https://forittle.web.app/',
+        title: 'Forittle-小個子女孩的穿搭秘密',
+        description:
+          '你也是小個子女孩嗎！神秘狐狸說，我有一個天大的祕密要告訴妳哦！',
         hashtags: 'Forittle',
       },
       networks: [
@@ -134,6 +134,7 @@ export default defineComponent({
   opacity: 0;
 }
 .result {
+  border-top: 0.5px solid black;
   position: absolute;
   width: 85%;
   height: 600px;

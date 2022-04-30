@@ -3,7 +3,10 @@ body {
   padding: 0px;
   margin: 0px;
   height: 100vh;
-  overscroll-behavior: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #272f3f;
 }
 
 a {
