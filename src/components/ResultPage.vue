@@ -214,11 +214,6 @@ export default defineComponent({
     grid-row-end: 8;
 
     justify-content: space-around !important;
-
-    > span {
-      display: flex;
-      margin-left: -42px;
-    }
   }
   &__8 {
     grid-column-start: 1;
@@ -238,6 +233,7 @@ export default defineComponent({
     }
     &__small {
       font-size: 17px;
+      margin-left: -42px;
     }
     &__large {
       font-size: 24px;
@@ -281,5 +277,11 @@ export default defineComponent({
 }
 .triangle:after {
   transform: rotate(135deg) skewY(-45deg) scale(0.707, 1.414) translate(50%);
+}
+
+@media only screen and (max-width: 380px) {
+  .box__text__small {
+    margin-left: -10px;
+  }
 }
 </style>

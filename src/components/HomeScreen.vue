@@ -2,7 +2,6 @@
   <div
     :style="{
       height: '100%',
-      backgroundColor: 'rgb(50,50,50)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -10,13 +9,9 @@
       width: '100%',
     }"
   >
-    <div class="container">
+    <div class="min-container">
       <img class="image" :src="backgroundImage" />
-      <div
-        v-show="!isFinished"
-        class="btn"
-        :style="pageIndex === 0 && { bottom: '85px' }"
-      >
+      <div v-show="!isFinished" class="btn" :style="additionalStyle">
         <div
           class="btn__relative"
           v-for="item in buttons"
@@ -28,6 +23,7 @@
             :labelStyle="item.labelStyle"
             :label="height ? item.content.replace('???', height) : item.content"
             :onClick="() => start(item)"
+            :isSmall="pageIndex !== 0 && pageIndex != 1"
           />
         </div>
       </div>
@@ -68,8 +64,8 @@
       />
       <ResultPage :visible="isFinished" :result="generateResult()" />
       <transition name="fade" appear>
-        <div v-if="showOverlay" class="container__overlay">
-          <div class="container__overlay__banner">
+        <div v-if="showOverlay" class="min-container__overlay">
+          <div class="min-container__overlay__banner">
             <p>我算出來了!</p>
           </div>
         </div>
@@ -88,6 +84,9 @@ import ResultPage from './ResultPage.vue'
 
 import { Questions } from '@/data/questions'
 import { Option } from '@/types'
+import resultA from '../assets/result-a.png'
+import resultB from '../assets/result-b.png'
+import resultC from '../assets/result-c.png'
 
 export default defineComponent({
   name: 'HomeScreen',
@@ -130,6 +129,13 @@ export default defineComponent({
     },
     isAbleToContinue() {
       return this.isEnabled && this.selectedLabel
+    },
+    additionalStyle() {
+      return this.pageIndex === 0
+        ? { top: 'unset', bottom: '80px' }
+        : this.pageIndex === 1 || this.pageIndex === 5 || this.pageIndex === 6
+        ? { top: '50%' }
+        : {}
     },
   },
   methods: {
@@ -177,13 +183,13 @@ export default defineComponent({
 
       if (this.type === 'C') {
         descriptions.push('若食膳衡方無虞', '宜層次添曲線突')
-        image = require('../assets/result-c.png')
+        image = resultC
       } else if (this.type === 'B') {
         descriptions.push('忌口無攔多紓壓', '宜四肢展修腰際')
-        image = require('../assets/result-b.png')
+        image = resultB
       } else {
         descriptions.push('忌久坐姿勤練胯', '宜著高腰擴肩寬')
-        image = require('../assets/result-a.png')
+        image = resultA
       }
       return {
         height,
@@ -208,6 +214,7 @@ export default defineComponent({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .btn {
+  top: calc((100% - 340px) / 2);
   position: absolute;
   display: flex;
   align-items: center;
@@ -218,7 +225,7 @@ export default defineComponent({
     position: relative;
   }
 }
-.container {
+.min-container {
   position: relative;
   display: flex;
   align-items: center;
@@ -348,6 +355,18 @@ export default defineComponent({
   }
   .triangle:after {
     transform: rotate(135deg) skewY(-45deg) scale(0.707, 1.414) translate(50%);
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .chat-box {
+    &__name {
+      left: 160px;
+    }
+    &__avatar {
+      width: 90px !important;
+      height: 90px !important;
+    }
   }
 }
 </style>

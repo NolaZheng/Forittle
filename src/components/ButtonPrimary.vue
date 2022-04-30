@@ -2,6 +2,7 @@
   <div
     :value="label"
     class="btn-container"
+    :class="isSmall && 'btn-small'"
     :style="[containerStyle, selected && { backgroundColor: '#272f3f' }]"
     @click="onClick"
   >
@@ -36,6 +37,7 @@ export default defineComponent({
     labelStyle: Object as PropType<StyleValue>,
     onClick: Function,
     selected: Boolean,
+    isSmall: Boolean,
   },
   computed: {
     show() {
@@ -55,6 +57,14 @@ export default defineComponent({
   height: 48px;
   background-color: #272f3f;
 }
+
+@media only screen and (max-width: 380px) {
+  .btn-small {
+    width: 120px !important;
+    height: 42px !important;
+  }
+}
+
 .label {
   color: #fff;
   font-size: 20px;
